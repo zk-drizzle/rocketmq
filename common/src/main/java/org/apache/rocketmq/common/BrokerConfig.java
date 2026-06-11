@@ -558,6 +558,8 @@ public class BrokerConfig extends BrokerIdentity {
 
     private int maxClientEventCount = 100;
 
+    private long liteEventCapacityCacheTtlMs = 5000;
+
     private long liteEventFullDispatchDelayTime = 10 * 1000;
 
     private long liteEventFullDispatchDelayTimeForWildcardGroup = 10 * 1000;
@@ -571,6 +573,10 @@ public class BrokerConfig extends BrokerIdentity {
     private boolean liteLagCountMetricsEnable = false;
 
     private int liteLagLatencyTopK = 50;
+
+    // HashedWheelTimer config for pop order lock manager
+    private long popOrderLockTimerTickMs = 100;
+    private int popOrderLockTimerTicksPerWheel = 512;
 
     public String getConfigBlackList() {
         return configBlackList;
@@ -2441,6 +2447,14 @@ public class BrokerConfig extends BrokerIdentity {
         this.maxClientEventCount = maxClientEventCount;
     }
 
+    public long getLiteEventCapacityCacheTtlMs() {
+        return liteEventCapacityCacheTtlMs;
+    }
+
+    public void setLiteEventCapacityCacheTtlMs(long liteEventCapacityCacheTtlMs) {
+        this.liteEventCapacityCacheTtlMs = liteEventCapacityCacheTtlMs;
+    }
+
     public long getLiteEventFullDispatchDelayTime() {
         return liteEventFullDispatchDelayTime;
     }
@@ -2487,6 +2501,22 @@ public class BrokerConfig extends BrokerIdentity {
 
     public void setLiteLagLatencyTopK(int liteLagLatencyTopK) {
         this.liteLagLatencyTopK = liteLagLatencyTopK;
+    }
+
+    public long getPopOrderLockTimerTickMs() {
+        return popOrderLockTimerTickMs;
+    }
+
+    public void setPopOrderLockTimerTickMs(long popOrderLockTimerTickMs) {
+        this.popOrderLockTimerTickMs = popOrderLockTimerTickMs;
+    }
+
+    public int getPopOrderLockTimerTicksPerWheel() {
+        return popOrderLockTimerTicksPerWheel;
+    }
+
+    public void setPopOrderLockTimerTicksPerWheel(int popOrderLockTimerTicksPerWheel) {
+        this.popOrderLockTimerTicksPerWheel = popOrderLockTimerTicksPerWheel;
     }
 
     public boolean isUseMessageFilterForNotification() {
