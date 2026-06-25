@@ -14,19 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.rocketmq.remoting.netty;
+package org.apache.rocketmq.common.message;
 
-import io.netty.channel.ChannelHandlerContext;
-import org.apache.rocketmq.remoting.protocol.RemotingCommand;
+import org.junit.Test;
 
-/**
- * Common remoting command processor
- */
-public interface NettyRequestProcessor {
-    RemotingCommand processRequest(ChannelHandlerContext ctx, RemotingCommand request)
-        throws Exception;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-    default boolean rejectRequest() {
-        return false;
+public class MessageVersionTest {
+
+    @Test
+    public void testValueOfMagicCode() {
+        for (MessageVersion version : MessageVersion.values()) {
+            assertThat(MessageVersion.valueOfMagicCode(version.getMagicCode()))
+                .isEqualTo(version);
+        }
+    }
+
+    @Test
+    public void testValueOfMagicCodeInvalid() {
+        assertThatThrownBy(() -> MessageVersion.valueOfMagicCode(0xDEADBEEF))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Invalid magicCode");
     }
 }
